@@ -41,4 +41,8 @@ public class User {
 		return new User(username, firstName, lastName, Email.from(email), Phone.from(phone));
 	}
 
+	public void updateId(long id) {
+		this.id = id;
+	}
+
 }

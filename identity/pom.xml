@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>ru.aizen.mtg</groupId>
 	<artifactId>identity</artifactId>
-	<version>0.1.0</version>
+	<version>1.0</version>
 	<name>identity</name>
 
 	<properties>

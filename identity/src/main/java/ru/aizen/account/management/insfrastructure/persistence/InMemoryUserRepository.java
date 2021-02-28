@@ -23,6 +23,7 @@ public class InMemoryUserRepository implements UserRepository {
 	public long save(User user) throws UserRepositoryException {
 		try {
 			sequence++;
+			user.updateId(sequence);
 			userStorage.put(sequence, user);
 			return sequence;
 		} catch (Exception e) {
