@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>ru.aizen.mtg</groupId>
-	<artifactId>account-management</artifactId>
+	<artifactId>indentity</artifactId>
 	<version>0.1.0</version>
-	<name>account-management</name>
-	<description>Demo project for Spring Boot</description>
+	<name>identity-management</name>
+
 	<properties>
 		<java.version>11</java.version>
 	</properties>

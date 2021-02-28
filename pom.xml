@@ -10,7 +10,7 @@
     <version>1.0</version>
 
     <modules>
-        <module>account-management</module>
+        <module>identity</module>
         <module>api-gateway</module>
     </modules>
 
