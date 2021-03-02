@@ -21,8 +21,12 @@ public class IdentityService {
 
 	public void create(String username, String email, String password) throws IdentityServiceException {
 		try {
-			User user = User.register(username, email, passwordSecure.encrypt(password));
-			userRepository.save(user);
+			if (userRepository.userAlreadyExists(username, email)) {
+				throw new IdentityServiceException("User with username " + username + " or e-mail " + email + " already exists");
+			} else {
+				User user = User.register(username, email, passwordSecure.encrypt(password));
+				userRepository.save(user);
+			}
 		} catch (UserRepositoryException | PasswordSecureException e) {
 			throw new IdentityServiceException(e);
 		}

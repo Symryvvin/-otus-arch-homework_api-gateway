@@ -41,6 +41,16 @@ public class InMemoryUserRepository implements UserRepository {
 	}
 
 	@Override
+	public boolean userAlreadyExists(String username, String email) throws UserRepositoryException {
+		try {
+			return userStorage.values().stream()
+					.anyMatch(u -> u.getEmail().getEmail().equals(email) || u.getUsername().equals(username));
+		} catch (Exception e) {
+			throw new UserRepositoryException(e);
+		}
+	}
+
+	@Override
 	public void deleteById(long userId) throws UserRepositoryException {
 		try {
 			userStorage.remove(userId);
