@@ -1,7 +1,5 @@
 package ru.aizen.account.management.application.rest;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -22,7 +20,22 @@ public class IdentityController {
 		this.identityService = identityService;
 	}
 
+	@PostMapping(path = "/user/registration", consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<RegistrationCompleteResponse> create(@RequestBody UserRegistrationDTO request) {
+		try {
+			identityService.create(request.getUsername(), request.getEmail(), request.getPassword());
+			return ResponseEntity.ok(
+					new RegistrationCompleteResponse(true, HttpStatus.OK.value(), "User registration successful")
+			);
+		} catch (IdentityServiceException e) {
+			return ResponseEntity.ok(
+					new RegistrationCompleteResponse(false, HttpStatus.BAD_REQUEST.value(), e.getMessage())
+			);
+		}
+	}
+
 	@PostMapping(path = "/user", consumes = MediaType.APPLICATION_JSON_VALUE)
+	@Deprecated
 	public ResponseEntity<Void> create(@RequestBody UserDataRequest request) throws IdentityServiceException {
 		identityService.create(
 				request.getUsername(),
