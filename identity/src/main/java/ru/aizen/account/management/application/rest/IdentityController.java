@@ -1,5 +1,7 @@
 package ru.aizen.account.management.application.rest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -12,6 +14,8 @@ import ru.aizen.account.management.domain.user.User;
 @RestController
 @RequestMapping("api/v1")
 public class IdentityController {
+
+	private static final Logger logger = LoggerFactory.getLogger(IdentityController.class);
 
 	private final IdentityService identityService;
 
@@ -27,9 +31,25 @@ public class IdentityController {
 			return ResponseEntity.ok(
 					new RegistrationCompleteResponse(true, HttpStatus.OK.value(), "User registration successful")
 			);
-		} catch (IdentityServiceException e) {
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
 			return ResponseEntity.ok(
 					new RegistrationCompleteResponse(false, HttpStatus.BAD_REQUEST.value(), e.getMessage())
+			);
+		}
+	}
+
+	@PostMapping(path = "/user/login", consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<UserLoginResponse> create(@RequestBody UserLoginDTO request) {
+		try {
+			String token = identityService.authenticate(request.getUsername(), request.getPassword());
+			return ResponseEntity.ok(
+					new UserLoginResponse(true, HttpStatus.OK.value(), token, "User login successful")
+			);
+		} catch (Exception e) {
+			logger.error(e.getMessage(), e);
+			return ResponseEntity.ok(
+					new UserLoginResponse(false, HttpStatus.BAD_REQUEST.value(), null, e.getMessage())
 			);
 		}
 	}

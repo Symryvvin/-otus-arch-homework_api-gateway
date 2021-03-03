@@ -2,6 +2,7 @@ package ru.aizen.account.management.application;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.aizen.account.management.domain.jwt.TokenService;
 import ru.aizen.account.management.domain.user.*;
 
 import java.util.Optional;
@@ -12,11 +13,13 @@ public class IdentityService {
 
 	private final UserRepository userRepository;
 	private final PasswordSecure passwordSecure;
+	private final TokenService tokenService;
 
 	@Autowired
-	public IdentityService(UserRepository userRepository, PasswordSecure passwordSecure) {
+	public IdentityService(UserRepository userRepository, PasswordSecure passwordSecure, TokenService tokenService) {
 		this.userRepository = userRepository;
 		this.passwordSecure = passwordSecure;
+		this.tokenService = tokenService;
 	}
 
 	public void create(String username, String email, String password) throws IdentityServiceException {
@@ -83,6 +86,26 @@ public class IdentityService {
 			}
 		} catch (UserRepositoryException e) {
 			throw new IdentityServiceException("User with id " + userId + " not found");
+		}
+	}
+
+	public String authenticate(String username, String password) throws IdentityServiceException {
+		try {
+			Optional<User> userOptional = userRepository.findByUsername(username);
+
+			if (userOptional.isPresent()) {
+				User user = userOptional.get();
+
+				if (passwordSecure.validate(password, user.getPassword())) {
+					return tokenService.generate(user);
+				} else {
+					throw new IdentityServiceException("Username or password is not valid");
+				}
+			} else {
+				throw new IdentityServiceException("User with username " + username + " not found");
+			}
+		} catch (UserRepositoryException | PasswordSecureException e) {
+			throw new IdentityServiceException(e);
 		}
 	}
 

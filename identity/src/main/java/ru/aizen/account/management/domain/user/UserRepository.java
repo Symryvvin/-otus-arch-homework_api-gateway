@@ -10,6 +10,8 @@ public interface UserRepository extends Repository<User, Long> {
 
 	Optional<User> findById(long userId) throws UserRepositoryException;
 
+	Optional<User> findByUsername(String username) throws UserRepositoryException;
+
 	boolean userAlreadyExists(String username, String email) throws UserRepositoryException;
 
 	void deleteById(long userId) throws UserRepositoryException;

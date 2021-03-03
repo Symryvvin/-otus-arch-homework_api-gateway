@@ -41,10 +41,19 @@ public class InMemoryUserRepository implements UserRepository {
 	}
 
 	@Override
+	public Optional<User> findByUsername(String username) throws UserRepositoryException {
+		try {
+			return userStorage.values().stream().filter(u -> u.getUsername().equalsIgnoreCase(username)).findAny();
+		} catch (Exception e) {
+			throw new UserRepositoryException(e);
+		}
+	}
+
+	@Override
 	public boolean userAlreadyExists(String username, String email) throws UserRepositoryException {
 		try {
 			return userStorage.values().stream()
-					.anyMatch(u -> u.getEmail().getEmail().equals(email) || u.getUsername().equals(username));
+					.anyMatch(u -> u.getEmail().getEmail().equalsIgnoreCase(email) || u.getUsername().equalsIgnoreCase(username));
 		} catch (Exception e) {
 			throw new UserRepositoryException(e);
 		}
