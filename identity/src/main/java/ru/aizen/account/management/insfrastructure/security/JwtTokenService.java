@@ -2,31 +2,35 @@ package ru.aizen.account.management.insfrastructure.security;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import ru.aizen.account.management.domain.jwt.TokenService;
 import ru.aizen.account.management.domain.user.User;
 
 import javax.annotation.PostConstruct;
-import java.security.*;
+import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.security.spec.InvalidKeySpecException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.Base64;
 import java.util.Date;
 
 @Component
 public class JwtTokenService implements TokenService {
 
+	@Value("${jwt.privateKey}")
+	private String privateKeyValue;
+	@Value("${jwt.publicKey}")
+	private String publicKeyValue;
+
 	private PrivateKey privateKey;
 	private PublicKey publicKey;
 
 	@PostConstruct
-	public void init() throws NoSuchAlgorithmException {
-		KeyPairGenerator keyPairGenerator = KeyPairGenerator.getInstance("RSA");
-		keyPairGenerator.initialize(2048);
-		KeyPair keyPair = keyPairGenerator.generateKeyPair();
-
-		privateKey = keyPair.getPrivate();
-		publicKey = keyPair.getPublic();
+	public void init() throws NoSuchAlgorithmException, InvalidKeySpecException {
+		privateKey = PemKeyUtils.privateKeyFromString(privateKeyValue);
+		publicKey = PemKeyUtils.publicKeyFromString(publicKeyValue);
 	}
 
 	@Override
@@ -47,11 +51,6 @@ public class JwtTokenService implements TokenService {
 				.parseClaimsJws(token)
 				.getBody()
 				.getSubject();
-	}
-
-	@Override
-	public String getPublicKey() {
-		return Base64.getEncoder().encodeToString(publicKey.getEncoded());
 	}
 
 }

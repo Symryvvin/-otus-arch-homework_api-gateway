@@ -8,6 +8,4 @@ public interface TokenService {
 
 	String validate(String token);
 
-	String getPublicKey();
-
 }
