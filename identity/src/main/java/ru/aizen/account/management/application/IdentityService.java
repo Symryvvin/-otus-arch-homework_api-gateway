@@ -35,24 +35,6 @@ public class IdentityService {
 		}
 	}
 
-	@Deprecated
-	public void create(String username, String firstName, String lastName, String email, String phone) throws IdentityServiceException {
-		try {
-			User user = User.from(username, firstName, lastName, email, phone);
-			userRepository.save(user);
-		} catch (UserRepositoryException e) {
-			throw new IdentityServiceException(e);
-		}
-	}
-
-	public void delete(long userId) throws IdentityServiceException {
-		try {
-			userRepository.deleteById(userId);
-		} catch (UserRepositoryException e) {
-			throw new IdentityServiceException(e);
-		}
-	}
-
 	public void update(long userId, String firstName, String lastName, String email, String phone)
 			throws IdentityServiceException {
 		try {

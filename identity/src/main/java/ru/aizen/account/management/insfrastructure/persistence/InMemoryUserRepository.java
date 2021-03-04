@@ -20,12 +20,11 @@ public class InMemoryUserRepository implements UserRepository {
 	}
 
 	@Override
-	public long save(User user) throws UserRepositoryException {
+	public void save(User user) throws UserRepositoryException {
 		try {
 			sequence++;
 			user.updateId(sequence);
 			userStorage.put(sequence, user);
-			return sequence;
 		} catch (Exception e) {
 			throw new UserRepositoryException(e);
 		}
@@ -54,15 +53,6 @@ public class InMemoryUserRepository implements UserRepository {
 		try {
 			return userStorage.values().stream()
 					.anyMatch(u -> u.getEmail().getEmail().equalsIgnoreCase(email) || u.getUsername().equalsIgnoreCase(username));
-		} catch (Exception e) {
-			throw new UserRepositoryException(e);
-		}
-	}
-
-	@Override
-	public void deleteById(long userId) throws UserRepositoryException {
-		try {
-			userStorage.remove(userId);
 		} catch (Exception e) {
 			throw new UserRepositoryException(e);
 		}

@@ -6,14 +6,12 @@ import java.util.Optional;
 
 public interface UserRepository extends Repository<User, Long> {
 
-	long save(User user) throws UserRepositoryException;
+	void save(User user) throws UserRepositoryException;
 
 	Optional<User> findById(long userId) throws UserRepositoryException;
 
 	Optional<User> findByUsername(String username) throws UserRepositoryException;
 
 	boolean userAlreadyExists(String username, String email) throws UserRepositoryException;
-
-	void deleteById(long userId) throws UserRepositoryException;
 
 }

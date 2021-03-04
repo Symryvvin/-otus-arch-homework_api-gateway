@@ -54,24 +54,6 @@ public class IdentityController {
 		}
 	}
 
-	@PostMapping(path = "/user", consumes = MediaType.APPLICATION_JSON_VALUE)
-	@Deprecated
-	public ResponseEntity<Void> create(@RequestBody UserDataRequest request) throws IdentityServiceException {
-		identityService.create(
-				request.getUsername(),
-				request.getFirstName(),
-				request.getLastName(),
-				request.getEmail(),
-				request.getPhone());
-		return ResponseEntity.ok().build();
-	}
-
-	@DeleteMapping(path = "/user/{userId}")
-	public ResponseEntity<Void> delete(@PathVariable("userId") long userId) throws IdentityServiceException {
-		identityService.delete(userId);
-		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-	}
-
 	@PutMapping(path = "/user/{userId}")
 	public ResponseEntity<Void> update(@PathVariable("userId") long userId, @RequestBody UserDataRequest request)
 			throws IdentityServiceException {
