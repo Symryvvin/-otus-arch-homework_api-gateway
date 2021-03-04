@@ -16,11 +16,15 @@ public class Phone {
 	}
 
 	public static Phone from(String phoneNumber) {
-		String trimmed = phoneNumber.replaceAll(SYMBOLS, "");
-		if (phoneNumberPattern.matcher(trimmed).matches()) {
-			return new Phone(Long.parseLong(trimmed));
+		if (phoneNumber != null) {
+			String trimmed = phoneNumber.replaceAll(SYMBOLS, "");
+			if (phoneNumberPattern.matcher(trimmed).matches()) {
+				return new Phone(Long.parseLong(trimmed));
+			} else {
+				throw new IllegalArgumentException("Wrong phone number. Must contain 11 digits and may contains + ( ) - symbols");
+			}
 		} else {
-			throw new IllegalArgumentException("Wrong phone number. Must contain 11 digits and may contains + ( ) - symbols");
+			return null;
 		}
 	}
 

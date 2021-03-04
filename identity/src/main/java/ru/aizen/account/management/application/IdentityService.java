@@ -25,7 +25,7 @@ public class IdentityService {
 	public void create(String username, String email, String password) throws IdentityServiceException {
 		try {
 			if (userRepository.userAlreadyExists(username, email)) {
-				throw new IdentityServiceException("User with username " + username + " or e-mail " + email + " already exists");
+				throw new IdentityServiceException("User with username '" + username + "' or e-mail '" + email + "' already exists");
 			} else {
 				User user = User.register(username, email, passwordSecure.encrypt(password));
 				userRepository.save(user);
@@ -35,39 +35,34 @@ public class IdentityService {
 		}
 	}
 
-	public void update(long userId, String firstName, String lastName, String email, String phone)
+	public void update(String username, String firstName, String lastName, String email, String phone)
 			throws IdentityServiceException {
 		try {
-			Optional<User> userOptional = userRepository.findById(userId);
+			Optional<User> userOptional = userRepository.findByUsername(username);
 
 			if (userOptional.isPresent()) {
 				User user = userOptional.get();
-
-				user.setFirstName(firstName);
-				user.setLastName(lastName);
-				user.setPhone(Phone.from(phone));
-				user.setEmail(Email.from(email));
-
-				userRepository.save(user);
+				user.update(firstName, lastName, email, phone);
+				userRepository.update(user);
 			} else {
-				throw new IdentityServiceException("User with id " + userId + " not found");
+				throw new IdentityServiceException("User '" + username + "' not found");
 			}
 		} catch (UserRepositoryException e) {
 			throw new IdentityServiceException(e);
 		}
 	}
 
-	public User findUser(long userId) throws IdentityServiceException {
+	public User findUser(String username) throws IdentityServiceException {
 		try {
-			Optional<User> userOptional = userRepository.findById(userId);
+			Optional<User> userOptional = userRepository.findByUsername(username);
 
 			if (userOptional.isPresent()) {
 				return userOptional.get();
 			} else {
-				throw new IdentityServiceException("User with id " + userId + " not found");
+				throw new IdentityServiceException("User '" + username + "' not found");
 			}
 		} catch (UserRepositoryException e) {
-			throw new IdentityServiceException("User with id " + userId + " not found");
+			throw new IdentityServiceException(e);
 		}
 	}
 
@@ -84,7 +79,7 @@ public class IdentityService {
 					throw new IdentityServiceException("Username or password is not valid");
 				}
 			} else {
-				throw new IdentityServiceException("User with username " + username + " not found");
+				throw new IdentityServiceException("User '" + username + "' not found");
 			}
 		} catch (UserRepositoryException | PasswordSecureException e) {
 			throw new IdentityServiceException(e);

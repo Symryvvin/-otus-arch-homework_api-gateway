@@ -31,6 +31,15 @@ public class InMemoryUserRepository implements UserRepository {
 	}
 
 	@Override
+	public void update(User user) throws UserRepositoryException {
+		try {
+			userStorage.put(user.getId(), user);
+		} catch (Exception e) {
+			throw new UserRepositoryException(e);
+		}
+	}
+
+	@Override
 	public Optional<User> findById(long userId) throws UserRepositoryException {
 		try {
 			return Optional.ofNullable(userStorage.get(userId));

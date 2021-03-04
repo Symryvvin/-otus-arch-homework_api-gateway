@@ -1,4 +1,4 @@
-package ru.aizen.account.management.application.rest;
+package ru.aizen.account.management.application.rest.identity.response;
 
 import lombok.Getter;
 

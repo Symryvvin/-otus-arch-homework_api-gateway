@@ -50,6 +50,7 @@ public class User {
 		Assert.hasLength(email, "Email is required");
 		this.firstName = firstName;
 		this.lastName = lastName;
+		this.email = Email.from(email);
 		this.phone = Phone.from(phone);
 	}
 
