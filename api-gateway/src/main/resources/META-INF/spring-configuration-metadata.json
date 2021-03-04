@@ -1,0 +1,14 @@
+{
+  "properties": [
+    {
+      "name": "identityServiceUri",
+      "type": "java.lang.String",
+      "description": "Identity Service Uri."
+    },
+    {
+      "name": "jwt.publicKey",
+      "type": "java.lang.String",
+      "description": "Json web token public key."
+    }
+  ]
+}

@@ -39,15 +39,17 @@ public class JwtTokenService implements TokenService {
 		return Jwts.builder()
 				.setSubject(user.getUsername())
 				.setExpiration(date)
-				.signWith(SignatureAlgorithm.RS256, privateKey)
+				.setHeaderParam("alg", "RS256")
+				.signWith(privateKey, SignatureAlgorithm.RS256)
 				.compact();
 
 	}
 
 	@Override
 	public String validate(String token) {
-		return Jwts.parser()
+		return Jwts.parserBuilder()
 				.setSigningKey(publicKey)
+				.build()
 				.parseClaimsJws(token)
 				.getBody()
 				.getSubject();
