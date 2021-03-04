@@ -13,3 +13,6 @@ spring:
         wiretap: true
       httpserver:
         wiretap: true
+
+server:
+  port: 8081
