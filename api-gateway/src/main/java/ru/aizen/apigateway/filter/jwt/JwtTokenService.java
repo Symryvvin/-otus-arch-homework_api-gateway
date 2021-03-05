@@ -1,6 +1,8 @@
 package ru.aizen.apigateway.filter.jwt;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -36,13 +38,19 @@ public class JwtTokenService {
 				);
 	}
 
-	public String getLogin(String token) {
-		return Jwts.parserBuilder()
-				.setSigningKey(publicKey)
-				.build()
-				.parseClaimsJws(token)
-				.getBody()
-				.getSubject();
+	public String getLogin(String token) throws JwtTokenServiceException{
+		try {
+			return Jwts.parserBuilder()
+					.setSigningKey(publicKey)
+					.build()
+					.parseClaimsJws(token)
+					.getBody()
+					.getSubject();
+		} catch (ExpiredJwtException e) {
+			throw new JwtTokenServiceException("Expired token", e);
+		} catch (MalformedJwtException e) {
+			throw new JwtTokenServiceException("Invalid token", e);
+		}
 	}
 
 }

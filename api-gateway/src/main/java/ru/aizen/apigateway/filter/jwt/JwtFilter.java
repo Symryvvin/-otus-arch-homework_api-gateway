@@ -35,11 +35,17 @@ public class JwtFilter implements GatewayFilter {
 			exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
 			return exchange.getResponse().setComplete();
 		} else {
-			exchange.mutate()
-					.request(request -> request.header("-X-Username", getLoginFromToken(token)))
-					.build();
+			try {
+				String login = getLoginFromToken(token);
+				exchange.mutate()
+						.request(request -> request.header("-X-Username", login))
+						.build();
 
-			return chain.filter(exchange);
+				return chain.filter(exchange);
+			} catch (JwtTokenServiceException e) {
+				exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
+				return exchange.getResponse().setComplete();
+			}
 		}
 	}
 
@@ -61,7 +67,7 @@ public class JwtFilter implements GatewayFilter {
 				.orElse(null);
 	}
 
-	private String getLoginFromToken(String token) {
+	private String getLoginFromToken(String token) throws JwtTokenServiceException {
 		return tokenService.getLogin(token);
 	}
 
