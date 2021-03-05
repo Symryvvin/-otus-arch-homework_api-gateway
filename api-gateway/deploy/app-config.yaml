@@ -1,6 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: api-gateway-config
-data:
-  IDENTITY_SERVICE_URL: "http://identity-app-service:9000"

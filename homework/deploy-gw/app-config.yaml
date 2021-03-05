@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: api-gateway-config
+data:
+  IDENTITY_SERVICE_URI: "http://identity-app-service:9000"
+  JWT_PUBLIC_KEY: |
+    -----BEGIN PUBLIC KEY-----
+    MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAz6nSQ0mkeF3KTHvdXVmY
+    k2Pxt0qNPpcTdRWYfPuhThorFdNUW2gzWyfFlo0/S9tCSVhd71M3dNN220S94QN+
+    kcoqF2V5FDlOWpAsVb6Rjp5yoeyNB94VXwMegdmRA2eLhG89ncgHu7vsPjxoAgce
+    LRbOHYYypSUKdYruCObBKDqS0JO8vzqg80bnm2xmGk5gEKjSha2DXx3hyAMSfnOG
+    1GE/r8W35472kq1X04zm2iuoCCSwifiSi5GF4Lr1seLibprai9uctkhEO2TJeHol
+    1sEiPXLSDu5XOIAhzUrHLjx3tzpeYdLSyGwhlq0DOluy6hDAl/JR/GzEgEuNBWTZ
+    2wIDAQAB
+    -----END PUBLIC KEY-----
