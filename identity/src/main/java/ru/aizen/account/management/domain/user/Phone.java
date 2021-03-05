@@ -4,9 +4,9 @@ import java.util.regex.Pattern;
 
 public class Phone {
 
-	private static final String PHONE_FORMAT_REGEXP = "(\\d)(\\d{3})(\\d{3})(\\d{2})(\\d{2})";
-	private static final String PHONE_REPLACEMENT = "+$1($2)$3-$4-$5";
-	private static final Pattern phoneNumberPattern = Pattern.compile("\\d{11}");
+	private static final String PHONE_FORMAT_REGEXP = "(\\d{3})(\\d{3})(\\d{2})(\\d{2})";
+	private static final String PHONE_REPLACEMENT = "($1)$2-$3-$4";
+	private static final Pattern phoneNumberPattern = Pattern.compile("\\d{10}");
 	private static final String SYMBOLS = "[ +-/(/)]*";
 
 	private final long phoneNumber;
@@ -21,7 +21,7 @@ public class Phone {
 			if (phoneNumberPattern.matcher(trimmed).matches()) {
 				return new Phone(Long.parseLong(trimmed));
 			} else {
-				throw new IllegalArgumentException("Wrong phone number. Must contain 11 digits and may contains + ( ) - symbols");
+				throw new IllegalArgumentException("Wrong phone number. Must contain 10 digits and may contains + ( ) - symbols");
 			}
 		} else {
 			return null;
